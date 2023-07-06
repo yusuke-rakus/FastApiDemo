@@ -1,14 +1,29 @@
 from enum import Enum
 from typing import Union
 
-from fastapi import FastAPI
+import uvicorn as uvicorn
+from fastapi import Depends, FastAPI
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
+
+from app.crud import crud
+from app.database.config import SessionLocal
 
 app = FastAPI()
 
 
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
 @app.get("/")
-async def root():
+async def root(db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_email(db, email='sample')
+    print(db_user)
     return {"message": "Hello FastAPI",
             "name": "Yusuke",
             "age": 26,
@@ -68,3 +83,7 @@ class Account(BaseModel):
 @app.post("/account/")
 async def account(account: Account):
     return account
+
+
+if __name__ == '__main__':
+    uvicorn.run(app=app)
