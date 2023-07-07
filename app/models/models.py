@@ -8,18 +8,18 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'user'
 
-    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, primary_key=True, index=True)
     email = Column(String(20), unique=True, index=True)
 
-    item = relationship('item')
+    item = relationship('Item')
 
 
 class Item(Base):
     __tablename__ = 'item'
 
-    id = Column(Integer, primary_key=True, index=True)
+    item_id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     description = Column(String, index=True)
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('user.user_id'))
 
     user = relationship('User', back_populates='item')
