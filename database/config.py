@@ -5,10 +5,10 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 class BaseEngine(object):
 
     def __init__(self):
-        username = 'root'
-        password = ''
+        username = 'demo'
+        password = 'password'
         hostname = 'localhost'
-        dbname = 'fast_api_db'
+        dbname = 'demo'
         url = f'mysql+pymysql://{username}:{password}@{hostname}/{dbname}?charset=utf8'
         self.engine = create_engine(url, echo=True)
 
