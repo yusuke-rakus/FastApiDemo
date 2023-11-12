@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.orm import joinedload
 
 from forms.user_forms import LoginForm, CreateUserForm, DeleteUserForm
 from models import models
@@ -36,7 +37,8 @@ def delete_user(db: Session, user: DeleteUserForm):
     return db_user
 
 
-def select_all_user_with_item(db: Session):
-    user = models.User
-    item = models.Item
-    return db.query(user, item).outerjoin(item, item.user_id == user.user_id).all()
+def select_all_user_with_item(db: Session, user_id: int | None):
+    if user_id:
+        return db.query(models.User).options(joinedload(models.User.items)).where(models.User.user_id == user_id).all()
+    else:
+        return db.query(models.User).options(joinedload(models.User.items)).all()

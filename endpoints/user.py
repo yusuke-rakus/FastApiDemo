@@ -35,5 +35,5 @@ async def create_user(user: DeleteUserForm, db: Session = Depends(get_db)):
 
 
 @router.get('/user/showAll')
-async def sample(db: Session = Depends(get_db)):
-    return user_crud.select_all_user_with_item(db=db)
+async def sample(user_id: int | None = None, db: Session = Depends(get_db)):
+    return user_crud.select_all_user_with_item(db=db, user_id=user_id)

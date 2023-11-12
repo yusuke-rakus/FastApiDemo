@@ -11,7 +11,7 @@ class User(Base):
     user_id = Column(Integer, primary_key=True, index=True)
     email = Column(String(20), unique=True, index=True)
 
-    item = relationship('Item')
+    items = relationship("Item", backref="user")
 
 
 class Item(Base):
@@ -21,5 +21,3 @@ class Item(Base):
     title = Column(String, index=True)
     description = Column(String, index=True)
     user_id = Column(Integer, ForeignKey('user.user_id'))
-
-    user = relationship('User', back_populates='item')
